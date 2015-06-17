@@ -1,10 +1,37 @@
-#ifndef YOKOI__MMU_H
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright © 2015 Allen Goodman
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the “Software”),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 
-#define YOKOI__MMU_H
+#ifndef YOKOI_MMU_H
+
+#define YOKOI_MMU_H
 
 #include <iostream>
 #include <map>
 #include <vector>
+
+#include "GPU.h";
+#include "Time.h"
 
 class MMU {
   std::vector<std::uint16_t> BIOS = {
@@ -45,10 +72,19 @@ class MMU {
   std::vector<std::uint16_t> ERAM;
   std::vector<std::uint16_t> WRAM;
   std::vector<std::uint16_t> ZRAM;
-  
+
   std::vector<std::uint16_t> ROM;
 public:
+  MMU(CPU processor, GPU graphics, Time t):
+    processor(processor), graphics(graphics), t(t) {};
+
   std::uint16_t IF;
+
+  CPU processor;
+
+  GPU graphics;
+
+  Time t;
 
   bool mapped = true;
 
@@ -98,6 +134,11 @@ public:
           case 0x0D00:
             return WRAM[address & 0x1FFF];
           case 0x0E00:
+            if ((address & 0x00FF) < 0x00A0) {
+              return graphics.OAM[address & 0x00FF];
+            } else {
+              return 0;
+            }
           case 0x0F00:
             if (address > 0xFF7F) {
               return ZRAM[address & 0x007F];
@@ -107,7 +148,11 @@ public:
                   break;
               }
             }
+          default:
+            break;
         }
+      default:
+        break;
     }
     
     return 0;
