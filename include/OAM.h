@@ -1,6 +1,6 @@
-#ifndef GAME_BOY_OAM_H
+#ifndef YOKOI_OAM_H
 
-#define GAME_BOY_OAM_H
+#define YOKOI_OAM_H
 
 /*
  * OBJECT ATTRIBUTE MEMORY (OAM)

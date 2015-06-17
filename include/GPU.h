@@ -1,6 +1,6 @@
-#ifndef GAME_BOY_GPU_H
+#ifndef YOKOI_GPU_H
 
-#define GAME_BOY_GPU_H
+#define YOKOI_GPU_H
 
 #include "OAM.h"
 

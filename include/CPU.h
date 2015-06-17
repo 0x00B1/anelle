@@ -1,6 +1,6 @@
-#ifndef GAME_BOY_CPU_H
+#ifndef YOKOI_CPU_H
 
-#define GAME_BOY_CPU_H
+#define YOKOI_CPU_H
 
 #include "MMU.h"
 
@@ -48,8 +48,8 @@ public:
     /*
      * OTHER REGISTERS
      */
-    { "I", 0 },  // INTERRUPT VECTOR
-    { "R", 0 },  // REFRESH COUNTER
+    { "I", 0 },               // INTERRUPT VECTOR
+    { "R", 0 },               // REFRESH COUNTER
     
     /*
      * PROGRAM COUNTER
@@ -61,11 +61,13 @@ public:
     switch (instruction) {
       case 0x0000:
         NOP();
+      default:
+        break;
     }
   }
   
   void execute(void) {
-    registers["R"] = (registers["R"] + 1) & 127;
+    registers["R"] = (unsigned short) ((registers["R"] + 1) & 127);
     
     std::function<void(void)> instruction = instructions["POP"];
     
@@ -110,7 +112,7 @@ public:
   void LD(void) {
     std::uint16_t address = memory.read_word(registers["PC"]);
     
-    registers["PC"] = registers["PC"] + 2;
+    registers["PC"] = (unsigned short) (registers["PC"] + 2);
     
     registers["A"] = memory.read_byte(address);
     
@@ -139,11 +141,11 @@ public:
   void PUSH(void) {
     registers["SP"]--;
     
-    memory.write_byte(registers["SP"], registers["B"]);
+    memory.write_byte(registers["SP"], (uint8_t) registers["B"]);
     
     registers["SP"]--;
     
-    memory.write_byte(registers["SP"], registers["C"]);
+    memory.write_byte(registers["SP"], (uint8_t) registers["C"]);
     
     instruction_execution.M =  3;
     instruction_execution.T = 12;

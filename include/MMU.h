@@ -1,6 +1,6 @@
-#ifndef GAME_BOY_MMU_H
+#ifndef YOKOI__MMU_H
 
-#define GAME_BOY_MMU_H
+#define YOKOI__MMU_H
 
 #include <iostream>
 #include <map>
@@ -48,6 +48,8 @@ class MMU {
   
   std::vector<std::uint16_t> ROM;
 public:
+  std::uint16_t IF;
+
   bool mapped = true;
 
   std::uint16_t read_byte(std::uint16_t address) {
@@ -112,7 +114,7 @@ public:
   }
   
   std::uint16_t read_word(uint16_t address) {
-    return read_byte(address) + (read_byte(address + 1) << 8);
+    return read_byte(address) + (read_byte((uint16_t) (address + 1)) << 8);
   }
   
   void write_byte(std::uint16_t address, std::uint8_t byte) {
@@ -180,16 +182,20 @@ public:
             }
             
             break;
+            default:
+                break;
         }
         
+        break;
+      default:
         break;
     }
   }
   
   void write_word(std::uint16_t address, std::uint16_t word) {
-    write_byte(address, word & 255);
+    write_byte(address, (uint8_t) (word & 255));
     
-    write_byte(address + 1, word >> 8);
+    write_byte((uint16_t) (address + 1), (uint8_t) (word >> 8));
   }
 };
 
