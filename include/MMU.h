@@ -110,6 +110,7 @@ public:
         return ROM[address];
       case 0x8000:
       case 0x9000:
+        return graphics.VRAM[address & 0x1FFF];
       case 0xA000:
       case 0xB000:
         return WRAM[address & 0x1FFF];
