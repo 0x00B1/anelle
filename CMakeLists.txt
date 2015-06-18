@@ -2,12 +2,9 @@ cmake_minimum_required(VERSION 3.2.2)
 
 project(yokoi CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
 include_directories(include)
 
-include_directories(/usr/local/Cellar/sdl2/2.0.3/include)
-
-link_libraries(/usr/local/Cellar/sdl2/2.0.3/lib/libSDL2.dylib)
-
 add_executable(yokoi src/main.cpp)
+
+set_property(TARGET yokoi PROPERTY CXX_STANDARD 11)
+set_property(TARGET yokoi PROPERTY CXX_STANDARD_REQUIRED ON)
