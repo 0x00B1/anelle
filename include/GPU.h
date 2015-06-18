@@ -26,13 +26,19 @@
 
 #define YOKOI_GPU_H
 
+#include <cstdint>
+
 #include "OAM.h"
 
 class GPU {
 public:
+  std::vector<std::uint16_t> tiles;
+
   std::vector<OAM> OAM;
   
   std::vector<std::uint16_t> VRAM;
+
+  void reset(void) {}
 };
 
 #endif

@@ -29,6 +29,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <iosfwd>
 
 #include "GPU.h";
 #include "Time.h"
@@ -73,7 +74,7 @@ class MMU {
   std::vector<std::uint16_t> WRAM;
   std::vector<std::uint16_t> ZRAM;
 
-  std::vector<std::uint16_t> ROM;
+  std::vector<std::uint8_t> ROM;
 public:
   MMU(CPU processor, GPU graphics, Time t):
     processor(processor), graphics(graphics), t(t) {};
@@ -241,6 +242,26 @@ public:
     write_byte(address, (uint8_t) (word & 255));
     
     write_byte((uint16_t) (address + 1), (uint8_t) (word >> 8));
+  }
+
+  void open(const std::string path) {
+    std::ifstream game_pak(path, std::ios::binary);
+
+    game_pak.unsetf(std::ios::skipws);
+
+    std::streampos size;
+
+    game_pak.seekg(0, std::ios::end);
+
+    size = game_pak.tellg();
+
+    game_pak.seekg(0, std::ios::beg);
+
+    ROM.reserve((unsigned long) size);
+
+    ROM.insert(ROM.begin(),
+               std::istream_iterator<std::uint8_t>(game_pak),
+               std::istream_iterator<std::uint8_t>());
   }
 };
 
