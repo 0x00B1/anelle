@@ -4,7 +4,7 @@ project(yokoi CXX)
 
 include_directories(include)
 
-add_executable(yokoi src/main.cpp)
+add_executable(yokoi src/main.cpp src/MMU.h src/MMU.cpp)
 
 set_property(TARGET yokoi PROPERTY CXX_STANDARD 11)
 set_property(TARGET yokoi PROPERTY CXX_STANDARD_REQUIRED ON)

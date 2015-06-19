@@ -22,10 +22,22 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#ifndef YOKOI_GPU_H
+
+#define YOKOI_GPU_H
+
 #include "CPU.h"
-#include "GPU.h"
 #include "MMU.h"
 
-int main(int argc, const char * argv[]) {
+namespace Yokoi {
+  class GPU {
+  public:
+    GPU(Yokoi::CPU CPU): CPU(CPU) {};
 
+    Yokoi::CPU CPU;
+
+    std::array<std::uint16_t, 8192> VRAM;
+  };
 }
+
+#endif

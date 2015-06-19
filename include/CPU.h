@@ -22,10 +22,58 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "CPU.h"
-#include "GPU.h"
-#include "MMU.h"
+#ifndef YOKOI_CPU_H
 
-int main(int argc, const char * argv[]) {
+#define YOKOI_CPU_H
 
+#include <cstdint>
+#include <map>
+#include <string>
+
+namespace Yokoi {
+  class CPU {
+  public:
+    std::map<const std::string, std::uint16_t> registers = {
+      /*
+       * MAIN REGISTERS
+       */
+
+      { "A",  0 }, { "F",  0 }, // AF (ACCUMULATOR AND FLAGS)
+      { "B",  0 }, { "C",  0 }, // BC
+      { "D",  0 }, { "E",  0 }, // DE
+      { "H",  0 }, { "L",  0 }, // HL (INDIRECT ADDRESS)
+
+      /*
+       * ALTERNATE REGISTERS
+       */
+
+      { "A′", 0 }, { "F′", 0 }, // AF′ (ACCUMULATOR AND FLAGS)
+      { "B′", 0 }, { "C′", 0 }, // BC′
+      { "D′", 0 }, { "E′", 0 }, // DE′
+      { "H′", 0 }, { "L′", 0 }, // HL′ (INDIRECT ADDRESS)
+
+      /*
+       * INDEX REGISTERS
+       */
+
+      { "IX", 0 },              // INDEX X
+      { "IY", 0 },              // INDEX Y
+      { "SP", 0 },              // STACK POINTER
+
+      /*
+       * OTHER REGISTERS
+       */
+
+      { "I",  0 },              // INTERRUPT VECTOR
+      { "R",  0 },              // REFRESH COUNTER
+
+      /*
+       * PROGRAM COUNTER
+       */
+
+      { "PC", 0 },              // PROGRAM COUNTER
+    };
+  };
 }
+
+#endif
